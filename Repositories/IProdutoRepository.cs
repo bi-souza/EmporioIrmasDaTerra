@@ -7,11 +7,13 @@ namespace EmporioIrmasDaTerra.Repositories
         // Contrato que define um método para buscar um produto pelo seu Id.
         Task<Produto?> GetById(int id);
 
-        // Contrato que define um método para buscar todos os produtos (simples, sem includes).
+        // Contrato que define um método para buscar todos os produtos (simples).
         Task<IEnumerable<Produto>> GetAll();
 
-        // NOVO: Contrato para buscar todos os produtos incluindo suas categorias.
-        // É ESTE que o HomeController vai usar!
+        // Contrato para buscar todos os produtos incluindo suas categorias.
         Task<IEnumerable<Produto>> GetAllWithCategories();
+
+        Task<IEnumerable<Produto>> GetFeaturedProducts();        
+    
     }
 }

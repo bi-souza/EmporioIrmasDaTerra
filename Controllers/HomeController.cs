@@ -1,43 +1,41 @@
-using EmporioIrmasDaTerra.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using EmporioIrmasDaTerra.Models;
+using EmporioIrmasDaTerra.Repositories; 
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
-namespace EmporioIrmasDaTerra.Controllers;
-
-public class HomeController : Controller
+namespace EmporioIrmasDaTerra.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly AppDbContext _context; 
-
-    // Construtor atualizado para receber o AppDbContext
-    public HomeController(ILogger<HomeController> logger, AppDbContext context)
+    public class HomeController : Controller
     {
-        _logger = logger;
-        _context = context; 
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly IProdutoRepository _produtoRepository;
 
-    // Método Index atualizado (sem o debug log)
-    public IActionResult Index()
-    {
-        // Busca os produtos e suas categorias no banco
-        var produtos = _context.Produtos
-                               .Include(p => p.Categoria) 
-                               .ToList();
         
-        // Envia a lista de produtos para a View
-        return View(produtos);
-    }
+        public HomeController(ILogger<HomeController> logger, IProdutoRepository produtoRepository)
+        {
+            _logger = logger;
+            _produtoRepository = produtoRepository;
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        
+        public async Task<IActionResult> Index()
+        {
+            // Usando esse método para os "Mais Vendidos" 
+            var produtosDestaque = await _produtoRepository.GetFeaturedProducts(); 
+            
+            // Envia a lista de produtos para a View
+            return View(produtosDestaque);
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

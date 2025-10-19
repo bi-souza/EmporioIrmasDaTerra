@@ -6,14 +6,14 @@ using EmporioIrmasDaTerra.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Adiciona o AppDbContext ao "container de serviços" da aplicação.
-// E o configura para usar um banco de dados em memória chamado "EcommerceDb".
+// E o configura para usar um banco de dados em memória chamado "EcommerceDb_Teste2".
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("EcommerceDb_Teste2"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// <-- 2. ADICIONE ESTA LINHA ABAIXO
+
 // Registra o Padrão de Repositório (Injeção de Dependência)
 // Diz ao ASP.NET: "Quando um construtor pedir IProdutoRepository, 
 // entregue uma nova instância de ProdutoRepository."
@@ -55,7 +55,7 @@ using (var scope = app.Services.CreateScope())
             // Chás
             new Produto 
             { 
-                NomeProduto = "Chá de Camomila Orgânico", 
+                NomeProduto = "Chá de Camomila", 
                 Descricao = "Flores de camomila secas para infusão. Pacote 30g.", 
                 Preco = 14.50m, 
                 Estoque = 50, 
@@ -80,11 +80,13 @@ using (var scope = app.Services.CreateScope())
             },
             new Produto 
             { 
-                NomeProduto = "Páprica Defumada Espanhola", 
-                Descricao = "Páprica doce defumada (Pimentón). Lata 75g.", 
+                NomeProduto = "Páprica Defumada", 
+                Descricao = "Páprica doce defumada (Pimentón). Pacote 75g.", 
                 Preco = 18.00m, 
                 Estoque = 45, 
-                IdCategoria = catTemperos.IdCategoria 
+                IdCategoria = catTemperos.IdCategoria,
+                EmDestaque = true, 
+                ImagemUrl = "/images/produtos/paprica-defumada.jpg"
             },
             // Suplementos
             new Produto 
@@ -97,25 +99,28 @@ using (var scope = app.Services.CreateScope())
             },
              new Produto 
             { 
-                NomeProduto = "Cloreto de Magnésio P.A.", 
+                NomeProduto = "Cloreto de Magnésio", 
                 Descricao = "Cloreto de Magnésio P.A. em pó. Embalagem 100g.", 
                 Preco = 15.00m, 
                 Estoque = 60, 
                 IdCategoria = catSuplementos.IdCategoria 
             },
             // Queijos
-            new Produto 
-            { 
-                NomeProduto = "Queijo Minas Artesanal (Serro)", 
-                Descricao = "Queijo curado artesanal da região do Serro-MG. Peça aprox. 500g.", 
-                Preco = 38.00m, 
-                Estoque = 20, 
-                IdCategoria = catQueijos.IdCategoria 
+            new Produto
+            {
+                NomeProduto = "Queijo Minas Artesanal",
+                Descricao = "Queijo curado artesanal da região do Serro-MG. Peça aprox. 500g.",
+                Preco = 38.00m,
+                Estoque = 20,
+                IdCategoria = catQueijos.IdCategoria,
+                EmDestaque = true,
+                ImagemUrl ="/images/produtos/queijo-minas.jpg"
+
             },
             // Vinhos
             new Produto 
             { 
-                NomeProduto = "Vinho Tinto Orgânico (Syrah)", 
+                NomeProduto = "Vinho Tinto", 
                 Descricao = "Vinho tinto seco orgânico nacional. Garrafa 750ml.", 
                 Preco = 72.00m, 
                 Estoque = 15, 
@@ -128,7 +133,9 @@ using (var scope = app.Services.CreateScope())
                 Descricao = "Grãos de Quinoa Real orgânica. Pacote 250g.", 
                 Preco = 19.90m, 
                 Estoque = 40, 
-                IdCategoria = catGraos.IdCategoria 
+                IdCategoria = catGraos.IdCategoria,
+                EmDestaque = true, 
+                ImagemUrl = "/images/produtos/quinoa-graos.jpg"
             }
         );
 

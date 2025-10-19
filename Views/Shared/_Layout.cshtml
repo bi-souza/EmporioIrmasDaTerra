@@ -1,47 +1,94 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-t" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EmporioIrmasDaTerra</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Empório Irmãs da Terra</title>
+    <link rel="icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EmporioIrmasDaTerra.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EmporioIrmasDaTerra</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <nav class="navbar navbar-principal">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.jpg" alt="Logo Empório Irmãs da Terra" style="height: 40px;" class="me-2"> <span style="color: var(--cor-verde-floresta); font-weight: 700; font-size: 1.2rem;">
+        Empório Irmãs da Terra
+                    </span>
+                </a>    
+                <div class="mx-auto w-50">
+                    <form class="form-busca" asp-controller="Produtos" asp-action="Buscar" method="get">
+                        <input class="form-control" type="search" placeholder="O que você procura?" name="termo">
+                        <button class="btn btn-busca" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="d-flex nav-icones">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-user-circle"></i>
+                        Entre ou<br>Cadastre-se
+                    </a>
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-heart"></i>
+                        Meus<br>Favoritos
+                    </a>
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-shopping-cart"></i>
+                        Meu<br>Carrinho
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-expand-sm navbar-categorias">
+            <div class="container">
+                <div class="navbar-nav mx-auto">
+                    <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="chas">Chás e Infusões</a>
+                    <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="temperos">Temperos</a>
+                    <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="suplementos">Suplementos</a>
+                    <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="queijos">Queijos e Laticínios</a>
+                    <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="vinhos">Vinhos e Bebidas</a>
+                    <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="graos">Grãos e Cereais</a>
+                    <a class="nav-link ofertas" asp-controller="Produtos" asp-action="Ofertas">
+                        <i class="fa fa-tag"></i> OFERTAS
+                    </a>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - EmporioIrmasDaTerra - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <a href="https://wa.me/5517981250517" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-12">
+                    <h5>REDES SOCIAIS </h5>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/emporioirmasdaterra/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/emporioirmasdaterra/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5517981250517"><i class="fab fa-whatsapp"></i></a>                       
+                                               
+                    </div>
+                </div>
+                </div>
+            <hr style="border-color: rgba(255,255,255,0.2);">
+            <p>&copy; @DateTime.Now.Year - Empório Irmãs da Terra</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
