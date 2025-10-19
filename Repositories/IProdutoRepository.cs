@@ -13,7 +13,11 @@ namespace EmporioIrmasDaTerra.Repositories
         // Contrato para buscar todos os produtos incluindo suas categorias.
         Task<IEnumerable<Produto>> GetAllWithCategories();
 
-        Task<IEnumerable<Produto>> GetFeaturedProducts();        
+        Task<IEnumerable<Produto>> GetFeaturedProducts();
+
+        Task<IEnumerable<Produto>> GetByCategoria(string categoriaSlug);
+        
+        Task<IEnumerable<Produto>> Buscar(string termo);
     
     }
 }
