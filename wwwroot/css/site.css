@@ -2,7 +2,8 @@
  * 1. DEFINIÇÃO DA PALETA DE CORES 
  */
 :root {
-    --cor-verde-floresta: #3E562F; 
+    --cor-verde-floresta: #3E562F;
+    --cor-verde-floresta-escuro: #2D4021; 
     --cor-marrom-terra: #5D4037;   
     --cor-branco-amendoa: #FBF9F6; 
     --cor-cinza-escuro: #333333;   
@@ -36,14 +37,14 @@ a:hover {
 }
 
 .btn-primary {
-    background-color: var(--cor-rosa-flor); 
-    border-color: var(--cor-rosa-flor);
+    background-color: var(--cor-cinza-escuro); 
+    border-color: var(--cor-cinza-escuro);
     color: var(--cor-branco-amendoa);       
 }
 
 .btn-primary:hover {
-    background-color: #a73c6a; /* Um tom mais escuro do rosa */
-    border-color: #a73c6a;
+    background-color: #79a86b; 
+    border-color: #79a86b;
     color: var(--cor-branco-amendoa);
 }
 
@@ -117,7 +118,7 @@ header {
         font-weight: 500;
         text-transform: uppercase;
         padding: 0.5rem 1rem;
-        margin: 0 0.7rem;
+        margin: 0 2.0rem;
     }
 
     .navbar-categorias .nav-link:hover {
