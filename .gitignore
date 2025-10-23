@@ -1,0 +1,15 @@
+# Arquivos do .NET
+[Oo]bj/
+[Bb]in/
+.vs/
+*.user
+*.suo
+
+# Arquivos de Configuração Sensíveis
+appsettings.Development.json
+Properties/launchSettings.json
+*.secrets.json
+
+# Logs e arquivos de sistema
+*.log
+.DS_Store

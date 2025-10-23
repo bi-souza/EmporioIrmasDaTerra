@@ -1,0 +1,52 @@
+@model IEnumerable<EmporioIrmasDaTerra.Models.Produto>
+
+@{
+    ViewData["Title"] = "Resultados da Busca";
+    var termoBuscado = ViewData["TermoBuscado"] as string;
+}
+
+<div class="container mt-4">
+
+    <div class="row mb-3">
+        <div class="col">
+            <h2>Resultados para "@termoBuscado"</h2>
+        </div>
+    </div>
+
+    <div class="row">
+
+        @if (Model.Any())
+        {
+            @foreach (var produto in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card product-card h-100">
+                        @{
+                            var imagePath = string.IsNullOrEmpty(produto.ImagemUrl) 
+                                            ? "/images/placeholder-produto.png" 
+                                            : produto.ImagemUrl;
+                        }
+                        <img src="@imagePath" class="card-img-top" alt="@produto.NomeProduto">
+                        <div class="card-body">
+                            <h5 class="card-title">@produto.NomeProduto</h5>
+                            <div class="product-stars">
+                                </div>
+                            <h4 style="color: var(--cor-verde-floresta);">R$ @produto.Preco.ToString("F2")</h4>
+                            <a href="#" class="btn btn-primary w-100 mt-2">
+                                <i class="fa fa-shopping-cart"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                    Nenhum produto foi encontrado para a busca "@termoBuscado".
+                </div>
+            </div>
+        }
+    </div>
+</div>

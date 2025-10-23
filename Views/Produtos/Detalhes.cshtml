@@ -1,0 +1,90 @@
+@model EmporioIrmasDaTerra.Models.Produto
+
+@{
+    ViewData["Title"] = Model.NomeProduto;
+}
+
+<div class="container mt-5">
+    
+    <div class="row">
+        
+        @* Coluna da Imagem *@
+        <div class="col-md-6">
+            @{
+                var imagePath = string.IsNullOrEmpty(Model.ImagemUrl) 
+                                ? "/images/placeholder-produto.jpg" 
+                                : Model.ImagemUrl;
+            }
+            <img src="@imagePath" class="img-fluid rounded" alt="@Model.NomeProduto">
+        </div>
+
+        @* Coluna dos Detalhes Principais *@
+        <div class="col-md-6">
+            <h1>@Model.NomeProduto</h1>
+            <p class="text-muted">Categoria: @Model.Categoria?.NomeCategoria</p> 
+
+            <h2 class="text-success">R$ @Model.Preco.ToString("F2")</h2>
+
+            <p class="mt-4">
+                @Model.Descricao
+            </p>
+
+            <h5 class="mt-4">Detalhes Técnicos:</h5>
+            <ul>
+                <li>
+                    @{
+                        // 1. Multiplica o peso (em kg) por 1000 para obter gramas
+                        int pesoEmGramas = (int)(Model.Peso * 1000); 
+                    }
+                    Peso Estimado: <strong>@pesoEmGramas g</strong>
+                </li>
+                <li>Quantidade em Estoque: @(Model.Estoque > 0 ? Model.Estoque.ToString() : "Indisponível")</li>
+            </ul>
+            
+            <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@Model.IdProduto" class="btn btn-lg btn-primary w-100 mt-4">
+                <i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho
+            </a>
+        </div>
+    </div>
+    
+    <hr class="my-5">
+
+    @* Seção de Avaliações - MOCKUP COM DADOS FICTÍCIOS *@
+<div class="row">
+    <div class="col-12">
+        <h3>Avaliações de Clientes</h3>
+        
+        <p class="text-muted">Mostrando 1 avaliação para @Model.NomeProduto</p>
+        
+        <div class="card p-3 my-3">
+            <div class="card-body">
+                
+                <h5 class="card-title mb-1">
+                    <i class="fa fa-user-circle"></i> Alice Moraes
+                </h5>
+                
+                @* Estrelas da Avaliação Fictícia *@
+                <div class="text-warning mb-2">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-alt"></i>
+                    <span class="text-muted" style="font-size: 0.9rem;"> (4.5 de 5)</span>
+                </div>
+
+                <p class="card-text">
+                    "Adorei o produto! A qualidade é excelente e chegou muito rápido. 
+                    O sabor é autêntico, exatamente o que eu esperava. Com certeza comprarei novamente no Empório Irmãs da Terra!"
+                </p>
+                
+                <footer class="blockquote-footer mt-2">
+                    Avaliado em 15 de Outubro de @DateTime.Now.Year
+                </footer>
+            </div>
+        </div>
+
+    </div>
+</div>
+    
+</div>

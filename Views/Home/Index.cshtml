@@ -1,0 +1,71 @@
+﻿@model IEnumerable<EmporioIrmasDaTerra.Models.Produto>
+
+@{
+    ViewData["Title"] = "Página Inicial";
+}
+
+@*<div class="hero-banner my-4">
+</div>*@
+
+
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col">
+            <h2>MAIS VENDIDOS <span style="color: var(--cor-cinza-escuro); font-weight: 300;"></span></h2>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (Model.Any())
+        {
+            @foreach (var produto in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card product-card h-100">
+                        
+                        @{
+                            var imagePath = string.IsNullOrEmpty(produto.ImagemUrl) 
+                                            ? "/images/placeholder-produto.jpg" 
+                                            : produto.ImagemUrl;
+                        }
+                        <img src="@imagePath" class="card-img-top" alt="@produto.NomeProduto">
+                        
+                        <div class="card-body">
+                            <a asp-controller="Produtos" asp-action="Detalhes" asp-route-id="@produto.IdProduto" style="text-decoration: none; color: inherit;">
+                                <h5 class="card-title">@produto.NomeProduto</h5>
+                            </a>
+                            
+                            <div class="product-stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-alt"></i>
+                                <span class="text-muted" style="font-size: 0.8rem;">(4.5)</span>
+                            </div>
+
+                            <h4 style="color: var(--cor-verde-floresta);">R$ @produto.Preco.ToString("F2")</h4>
+
+                            
+                            <a asp-controller="Produtos" asp-action="Detalhes" asp-route-id="@produto.IdProduto" class="btn btn-secondary w-100 mt-2">
+                                <i class="fa fa-info-circle"></i> Detalhes
+                            </a>
+
+                            
+                            <a href="#" class="btn btn-primary w-100 mt-2">
+                                <i class="fa fa-shopping-cart"></i> Comprar
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+                }
+        }
+        else
+        {
+            <div class="col-12">
+                <p>Nenhum produto em destaque no momento.</p>
+            </div>
+        }
+    </div>
+</div>
