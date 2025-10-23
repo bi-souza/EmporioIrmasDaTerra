@@ -8,7 +8,7 @@ namespace EmporioIrmasDaTerra.Data
     
     public class AppDbContext : DbContext 
     {
-        
+        // recebe 'options' configurado no Program.cs (ex: UseInMemoryDatabase).
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -34,6 +34,7 @@ namespace EmporioIrmasDaTerra.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // diz que a chave primária de uma avaliação é a combinação do IdCliente com o IdProduto
             modelBuilder.Entity<Avaliacao>()
                 .HasKey(a => new { a.IdCliente, a.IdProduto });
 

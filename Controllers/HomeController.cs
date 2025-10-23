@@ -20,7 +20,7 @@ namespace EmporioIrmasDaTerra.Controllers
         //retorna produtos em destaque
         public IActionResult Index() 
         {            
-            var produtosDestaque = _produtoRepository.GetFeaturedProducts(); // <-- Ver aviso abaixo!
+            var produtosDestaque = _produtoRepository.ObterProdutosEmDestaque(); 
             return View(produtosDestaque);
         }
      
