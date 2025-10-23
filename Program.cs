@@ -10,8 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("EcommerceDb_Teste2"));
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// necessario para session
+builder.Services.AddDistributedMemoryCache(); // cache em memoeria para a sessao
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
 // Registra o Padrão de Repositório (Injeção de Dependência)
@@ -19,6 +28,7 @@ builder.Services.AddControllersWithViews();
 // entregue uma nova instância de ProdutoRepository."
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
+builder.Services.AddHttpContextAccessor();   // para acessar HttpContext em controllers
 
 var app = builder.Build();
 
@@ -153,16 +163,20 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.UseSession(); //  ATIVE a sessão aqui, antes do MapControllerRoute
+
+
+//app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+  //  .WithStaticAssets();
 
 
 app.Run();

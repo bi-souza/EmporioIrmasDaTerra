@@ -40,9 +40,14 @@
 
                             <h4 style="color: var(--cor-verde-floresta);">R$ @produto.Preco.ToString("F2")</h4> 
 
-                            <a href="#" class="btn btn-primary w-100 mt-2"> 
-                                <i class="fa fa-shopping-cart"></i> Comprar
-                            </a>
+                            <form asp-controller="Carrinho" asp-action="Adicionar" method="post" class="mt-2"> @*envia o formulário para o CarrinhoController  e chama o método*@
+                                <input type="hidden" name="id" value="@produto.IdProduto" /> @* hidden envia o ID do produto*@
+                                <input type="number" name="qtd" value="1" min="1" class="form-control mb-2" style="width:90px" />
+                                <button type="submit" class="btn btn-primary w-100"> @*envia a requisição via POST*@
+                                    <i class="fa fa-shopping-cart"></i> Adicionar ao carrinho
+                                 </button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
