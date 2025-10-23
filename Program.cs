@@ -1,17 +1,19 @@
 using EmporioIrmasDaTerra.Data;
 using Microsoft.EntityFrameworkCore;
 using EmporioIrmasDaTerra.Models;
-using EmporioIrmasDaTerra.Repositories; 
+using EmporioIrmasDaTerra.Repositories;
 
+// Cria o "construtor" (builder) da aplicação, que carrega as configurações padrão (ex: appsettings.json) 
+// e é usado para registrar os serviços (banco de dados, padrão mvc, repository).
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona o AppDbContext ao "container de serviços" da aplicação.
-// E o configura para usar um banco de dados em memória chamado "EcommerceDb_Teste2".
+// Registra o AppDbContext no sistema e o configura para usar um banco de dados temporário 
+// na memória chamado "EcommerceDb_Teste2".
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("EcommerceDb_Teste2"));
 
-
-// Add services to the container.
+// Ativa o padrão MVC. Isso ensina o site a usar "Controllers" para gerenciar as requisições 
+// e "Views" para desenhar o HTML.
 builder.Services.AddControllersWithViews();
 
 // necessario para session
@@ -22,161 +24,56 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-
-// Registra o Padrão de Repositório (Injeção de Dependência)
-// Diz ao ASP.NET: "Quando um construtor pedir IProdutoRepository, 
-// entregue uma nova instância de ProdutoRepository."
+// Registra o Padrão de Repositório que separa a lógica de negocio da lógica de dados.
+// Quando um controller solicita IProdutoRepository, é entregue um ProdutoRepository (que busca os dados no bd) (injeção de dependência).
+// "AddScoped" significa que uma nova instância de ProdutoRepository será criada para cada requisição web (visita no site).
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
 builder.Services.AddHttpContextAccessor();   // para acessar HttpContext em controllers
 
+// Constrói o site (o "app") usando todos os serviços e configurações que foram registrados no "builder" (o construtor) acima.
 var app = builder.Build();
 
-// Este bloco cria um "escopo" para acessar os serviços da aplicação,
-// como o AppDbContext, para popular o banco em memória.
+// Inicia um "escopo de serviço" temporário (simulando uma "visita ao site").
+// Isso é necessário para usar com segurança o AppDbContext, que é um serviço 'Scoped' (temporário).
+// O 'using' garante que este escopo e todos os serviços dentro dele sejam "limpos" (descartados) no final do bloco
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    // Pega o contexto do banco de dados
-    var context = services.GetRequiredService<AppDbContext>();
+    var dbContext = services.GetRequiredService<AppDbContext>();
 
-    // Garante que o banco em memória foi criado
-    context.Database.EnsureCreated();
+    // Garante que o banco foi criado
+    dbContext.Database.EnsureCreated();
 
-    // Verifica se já existem dados na tabela de Categorias
-    if (!context.Categorias.Any())
-    {
-        // 1. Cria as Categorias
-        var catChas = new Categoria { NomeCategoria = "Chás e Infusões" };
-        var catTemperos = new Categoria { NomeCategoria = "Temperos e Especiarias" };
-        var catSuplementos = new Categoria { NomeCategoria = "Suplementos Naturais" };
-        var catQueijos = new Categoria { NomeCategoria = "Queijos e Laticínios" };
-        var catVinhos = new Categoria { NomeCategoria = "Vinhos e Bebidas" };
-        var catGraos = new Categoria { NomeCategoria = "Grãos e Cereais" };
-
-        // Adiciona as categorias ao contexto
-        context.Categorias.AddRange(catChas, catTemperos, catSuplementos, catQueijos, catVinhos, catGraos);
-        
-        // Salva as categorias no banco em memória para gerar os IDs
-        context.SaveChanges();
-
-        // 2. Cria os Produtos, usando os IDs das categorias salvas
-        context.Produtos.AddRange(
-            // Chás
-            new Produto 
-            { 
-                NomeProduto = "Chá de Camomila", 
-                Descricao = "Flores de camomila secas para infusão. Pacote 30g.", 
-                Preco = 14.50m, 
-                Estoque = 50, 
-                IdCategoria = catChas.IdCategoria 
-            },
-            new Produto 
-            { 
-                NomeProduto = "Chá Verde Tostado (Hojicha)", 
-                Descricao = "Chá verde japonês com baixo teor de cafeína. Pacote 50g.", 
-                Preco = 22.90m, 
-                Estoque = 30, 
-                IdCategoria = catChas.IdCategoria 
-            },
-            // Temperos
-            new Produto 
-            { 
-                NomeProduto = "Cúrcuma Pura (Açafrão-da-terra)", 
-                Descricao = "Raiz de cúrcuma moída pura. Pacote 100g.", 
-                Preco = 9.80m, 
-                Estoque = 100, 
-                IdCategoria = catTemperos.IdCategoria 
-            },
-            new Produto 
-            { 
-                NomeProduto = "Páprica Defumada", 
-                Descricao = "Páprica doce defumada (Pimentón). Pacote 75g.", 
-                Preco = 18.00m, 
-                Estoque = 45, 
-                IdCategoria = catTemperos.IdCategoria,
-                EmDestaque = true, 
-                ImagemUrl = "/images/produtos/paprica-defumada.jpg"
-            },
-            // Suplementos
-            new Produto 
-            { 
-                NomeProduto = "Spirulina em Cápsulas", 
-                Descricao = "Suplemento de microalga Spirulina. 60 cápsulas de 500mg.", 
-                Preco = 49.90m, 
-                Estoque = 25, 
-                IdCategoria = catSuplementos.IdCategoria 
-            },
-             new Produto 
-            { 
-                NomeProduto = "Cloreto de Magnésio", 
-                Descricao = "Cloreto de Magnésio P.A. em pó. Embalagem 100g.", 
-                Preco = 15.00m, 
-                Estoque = 60, 
-                IdCategoria = catSuplementos.IdCategoria 
-            },
-            // Queijos
-            new Produto
-            {
-                NomeProduto = "Queijo Minas Artesanal",
-                Descricao = "Queijo curado artesanal da região do Serro-MG. Peça aprox. 500g.",
-                Preco = 38.00m,
-                Estoque = 20,
-                IdCategoria = catQueijos.IdCategoria,
-                EmDestaque = true,
-                ImagemUrl ="/images/produtos/queijo-minas.jpg"
-
-            },
-            // Vinhos
-            new Produto 
-            { 
-                NomeProduto = "Vinho Tinto", 
-                Descricao = "Vinho tinto seco orgânico nacional. Garrafa 750ml.", 
-                Preco = 72.00m, 
-                Estoque = 15, 
-                IdCategoria = catVinhos.IdCategoria 
-            },
-            // Grãos
-             new Produto 
-            { 
-                NomeProduto = "Quinoa Real em Grãos", 
-                Descricao = "Grãos de Quinoa Real orgânica. Pacote 250g.", 
-                Preco = 19.90m, 
-                Estoque = 40, 
-                IdCategoria = catGraos.IdCategoria,
-                EmDestaque = true, 
-                ImagemUrl = "/images/produtos/quinoa-graos.jpg"
-            }
-        );
-
-        // Salva os produtos no banco em memória
-        context.SaveChanges();
-    }
+    // 2. CHAMA O MÉTODO DE POPULAR OS DADOS:
+    SeedData.Initialize(dbContext);
 }
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-  
-    app.UseHsts();
-}
-
+// Redireciona HTTP → HTTPS (se estiver habilitado no projeto)
 app.UseHttpsRedirection();
+
+// Habilita o servidor web a "servir" (enviar) arquivos estáticos
+// (como CSS, JavaScript e imagens) da pasta 'wwwroot'.
 app.UseStaticFiles();
+
+// Ativa o "roteador" do ASP.NET Core, o "recepcionista" que
+// analisa a URL da requisição (ex: /Home/Index).
 app.UseRouting();
+
+// ATENÇÃO: UseSession deve vir ANTES de Authorization
+app.UseSession();
 
 app.UseAuthorization();
 
-app.UseSession(); //  ATIVE a sessão aqui, antes do MapControllerRoute
-
-
-//app.MapStaticAssets();
-
+// "Distribui" as requisições para os Controllers
 app.MapControllerRoute(
+    // Define um nome para esta rota padrão.
     name: "default",
+    // Define o "padrão" da URL:
+    // 1º parte = {controller}, se não tiver, usa 'Home'.
+    // 2º parte = {action}, se não tiver, usa 'Index'.
+    // 3º parte = {id?}, o '?' indica que este parâmetro é opcional.
     pattern: "{controller=Home}/{action=Index}/{id?}");
-  //  .WithStaticAssets();
 
-
+// Inicia a aplicação
 app.Run();

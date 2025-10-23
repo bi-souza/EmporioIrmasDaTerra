@@ -105,29 +105,28 @@ namespace EmporioIrmasDaTerra.Controllers
 
         // 🔹 FINALIZAR COMPRA 🔹
         // POST /Carrinho/Finalizar
-        [HttpPost]
-        public IActionResult Finalizar()
-        {
-            // calcula o total e limpa o carrinho
-            var total = GetCart().Sum(i => i.PrecoUnitario * i.Quantidade);
-            SaveCart(new List<CartItem>());
-           HttpContext.Session.Remove("KEY");//  limpar o carrinho
-
-            // mensagem temporária (aparece uma vez)
-            TempData["Msg"] = $"Compra finalizada! Total: {total:C}.";
-            return View("PedidoRealizado"); // agora quando clicar em finalizar compra vai aparecer essa mensagem da view
-        }
+        
         [HttpPost]
         public IActionResult FinalizarCompra()
         {
-             HttpContext.Session.Remove("KEY");//  limpar o carrinho
+              // Calcula o total da compra
+            var carrinho = GetCart();
+            var total = carrinho.Sum(i => i.PrecoUnitario * i.Quantidade);
+
+            // Limpa completamente o carrinho da sessão
+            HttpContext.Session.Remove("CART");
+
+            // Reforço: grava uma lista vazia no carrinho
+            SaveCart(new List<CartItem>());
 
 
+            //// futuramente para o banco de dados
 
-            // Aqui futuramente você pode salvar o pedido no banco
+            // Mensagem de confirmação
+            TempData["Msg"] = $"Compra finalizada! Total: {total:C}.";
 
-            // Retorna uma página de confirmação
-        return View("PedidoRealizado");
+            // Mostra a página de confirmação
+            return View("PedidoRealizado");
         }
 
     }

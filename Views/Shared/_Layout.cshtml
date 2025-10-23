@@ -34,11 +34,15 @@
                         <i class="fa fa-user-circle"></i>
                         Entre ou<br>Cadastre-se
                     </a>
-                    <a class="nav-link" href="#">
+                    @*<a class="nav-link" href="#">
                         <i class="fa fa-heart"></i>
                         Meus<br>Favoritos
+
                     </a>            <!--   asp-controller="Carrinho" → diz que vai abrir o controller CarrinhoController.    -->
                     <a class="nav-link" asp-controller="Carrinho" asp-action="Index">  <!-- asp-action="Index" → indica que vai chamar o método Index() (a página do carrinho).  -->
+
+                    </a>*@
+                    <a class="nav-link" asp-controller="Carrinho" asp-action="Index">
                         <i class="fa fa-shopping-cart"></i>
                         Meu<br>Carrinho
                     </a>
@@ -55,9 +59,9 @@
                     <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="queijos">Queijos e Laticínios</a>
                     <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="vinhos">Vinhos e Bebidas</a>
                     <a class="nav-link" asp-controller="Produtos" asp-action="PorCategoria" asp-route-categoria="graos">Grãos e Cereais</a>
-                    <a class="nav-link ofertas" asp-controller="Produtos" asp-action="Ofertas">
+                    @*<a class="nav-link ofertas" asp-controller="Produtos" asp-action="Ofertas">
                         <i class="fa fa-tag"></i> OFERTAS
-                    </a>
+                    </a>*@
                 </div>
             </div>
         </nav>

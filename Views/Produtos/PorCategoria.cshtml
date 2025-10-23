@@ -21,7 +21,7 @@
                     <div class="card product-card h-100">
                         @{
                             var imagePath = string.IsNullOrEmpty(produto.ImagemUrl) 
-                                            ? "/images/placeholder-produto.png" 
+                                            ? "/images/placeholder-produto.jpg" 
                                             : produto.ImagemUrl;
                         }
                         <img src="@imagePath" class="card-img-top" alt="@produto.NomeProduto">
