@@ -30,19 +30,20 @@ namespace EmporioIrmasDaTerra.Repositories
                                  .ToListAsync();
         }
 
-        public async Task<IEnumerable<Produto>> GetFeaturedProducts()
+        public IEnumerable<Produto> GetFeaturedProducts()
         {
-            // Busca apenas produtos marcados como "EmDestaque"            
-            return await _context.Produtos
+
+            return _context.Produtos
                                  .Where(p => p.EmDestaque)
                                  .Include(p => p.Categoria)
-                                 .ToListAsync();
-        }
+                                 .ToList(); // Esta é a mudança principal
+         }
 
-        public async Task<IEnumerable<Produto>> GetByCategoria(string categoriaSlug)
+     
+        public IEnumerable<Produto> GetByCategory(string categoria)
         {
-            // Mapeia o 'slug' da URL para o nome da categoria no banco
-            string termoBusca = categoriaSlug switch
+            
+            string termoBusca = categoria switch
             {
                 "chas" => "Chás e Infusões",
                 "temperos" => "Temperos e Especiarias",
@@ -50,7 +51,7 @@ namespace EmporioIrmasDaTerra.Repositories
                 "queijos" => "Queijos e Laticínios",
                 "vinhos" => "Vinhos e Bebidas",
                 "graos" => "Grãos e Cereais",
-                _ => "" // Se não achar, não retorna nada
+                _ => "" // Se não achar, retorna lista vazia
             };
 
             if (string.IsNullOrEmpty(termoBusca))
@@ -58,31 +59,30 @@ namespace EmporioIrmasDaTerra.Repositories
                 return new List<Produto>();
             }
 
-            // Busca produtos onde o nome da categoria seja igual ao termo
-            return await _context.Produtos //
-                                 .Include(p => p.Categoria) //
-                                 .Where(p => p.Categoria.NomeCategoria == termoBusca)
-                                 .ToListAsync();
+            // Busca produtos onde o nome da categoria seja igual ao termo            
+            return _context.Produtos 
+                        .Include(p => p.Categoria) 
+                        .Where(p => p.Categoria.NomeCategoria == termoBusca)
+                        .ToList();
         }
 
-        public async Task<IEnumerable<Produto>> Buscar(string termo)
+        public IEnumerable<Produto> Search(string termo)
         {
-            // Se o termo de busca for nulo ou vazio, retorna uma lista vazia
+            
             if (string.IsNullOrWhiteSpace(termo))
             {
-                return new List<Produto>(); // Retorna lista vazia
+                return new List<Produto>(); 
             }
 
             var termoBusca = termo.ToLower();
-
-            // Busca produtos onde o Nome ou a Descrição contenham o termo
-            return await _context.Produtos //
-                                .Include(p => p.Categoria) //
-                                .Where(p => 
-                                    p.NomeProduto.ToLower().Contains(termoBusca) ||
-                                    p.Descricao.ToLower().Contains(termoBusca)
-                                )
-                                .ToListAsync();
+            
+            return _context.Produtos 
+                        .Include(p => p.Categoria) 
+                        .Where(p => 
+                                p.NomeProduto.ToLower().Contains(termoBusca) ||
+                                p.Descricao.ToLower().Contains(termoBusca)
+                        )
+                        .ToList(); 
         }
         
 
