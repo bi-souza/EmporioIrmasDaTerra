@@ -78,15 +78,18 @@ namespace EmporioIrmasDaTerra.Repositories
             // Busca produtos onde o Nome ou a Descrição contenham o termo
             return await _context.Produtos //
                                 .Include(p => p.Categoria) //
-                                .Where(p => 
+                                .Where(p =>
                                     p.NomeProduto.ToLower().Contains(termoBusca) ||
                                     p.Descricao.ToLower().Contains(termoBusca)
                                 )
                                 .ToListAsync();
         }
+
+        public async Task Add(Produto produto)
+        {
+            _context.Produtos.Add(produto);
+            await _context.SaveChangesAsync(); // Salva as mudanças no banco
+        }
         
-
-
-
     }
 }

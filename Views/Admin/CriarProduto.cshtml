@@ -1,0 +1,66 @@
+@model EmporioIrmasDaTerra.Models.Produto
+
+@{
+    ViewData["Title"] = "Cadastrar Novo Produto";
+}
+
+<h1>Cadastrar Novo Produto</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="CriarProduto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* Campo Nome do Produto *@
+            <div class="form-group mb-3">
+                <label asp-for="NomeProduto" class="control-label"></label>
+                <input asp-for="NomeProduto" class="form-control" />
+                <span asp-validation-for="NomeProduto" class="text-danger"></span>
+            </div>
+
+            @* Campo Descrição *@
+            <div class="form-group mb-3">
+                <label asp-for="Descricao" class="control-label"></label>
+                <textarea asp-for="Descricao" class="form-control"></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            
+            @* Campo Preço *@
+            <div class="form-group mb-3">
+                <label asp-for="Preco" class="control-label"></label>
+                <input asp-for="Preco" class="form-control" />
+                <span asp-validation-for="Preco" class="text-danger"></span>
+            </div>
+            
+            @* Campo Peso (Novo Campo!) *@
+            <div class="form-group mb-3">
+                <label asp-for="Peso" class="control-label"></label>
+                <input asp-for="Peso" class="form-control" />
+                <span asp-validation-for="Peso" class="text-danger"></span>
+            </div>
+
+            @* Campo Imagem URL *@
+            <div class="form-group mb-3">
+                <label asp-for="ImagemUrl" class="control-label"></label>
+                <input asp-for="ImagemUrl" class="form-control" />
+                <span asp-validation-for="ImagemUrl" class="text-danger"></span>
+            </div>
+            
+            @* Campo Checkbox Em Destaque *@
+            <div class="form-group form-check mb-3">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EmDestaque" /> @Html.DisplayNameFor(model => model.EmDestaque)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Salvar Produto" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @* O _ValidationScriptsPartial carrega os scripts de validação que você me mostrou! *@
+}

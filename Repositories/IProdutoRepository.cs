@@ -18,6 +18,9 @@ namespace EmporioIrmasDaTerra.Repositories
         Task<IEnumerable<Produto>> GetByCategoria(string categoriaSlug);
         
         Task<IEnumerable<Produto>> Buscar(string termo);
-    
+
+        // Adicionar um produto ao banco de dados (assíncrono)
+        Task Add(Produto produto);
+        
     }
 }
