@@ -37,8 +37,12 @@
                     @*<a class="nav-link" href="#">
                         <i class="fa fa-heart"></i>
                         Meus<br>Favoritos
+
+                    </a>            <!--   asp-controller="Carrinho" → diz que vai abrir o controller CarrinhoController.    -->
+                    <a class="nav-link" asp-controller="Carrinho" asp-action="Index">  <!-- asp-action="Index" → indica que vai chamar o método Index() (a página do carrinho).  -->
+
                     </a>*@
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" asp-controller="Carrinho" asp-action="Index">
                         <i class="fa fa-shopping-cart"></i>
                         Meu<br>Carrinho
                     </a>
