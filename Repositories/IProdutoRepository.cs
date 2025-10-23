@@ -8,17 +8,19 @@ namespace EmporioIrmasDaTerra.Repositories
         Task<Produto?> GetById(int id);
 
         // Contrato que define um método para buscar todos os produtos (simples).
-        Task<IEnumerable<Produto>> GetAll();
+        //Task<IEnumerable<Produto>> GetAll();
 
         // Contrato para buscar todos os produtos incluindo suas categorias.
-        Task<IEnumerable<Produto>> GetAllWithCategories();
+        //Task<IEnumerable<Produto>> GetAllWithCategories();
 
         // Contrato para buscar os produtos em destaque
-        IEnumerable<Produto> GetFeaturedProducts();
+        IEnumerable<Produto> ObterProdutosEmDestaque();
 
-        IEnumerable<Produto> GetByCategory(string categoria);
+        // Contrato para buscar os produtos pelo menu
+        IEnumerable<Produto> PorCategoria(string categoria);
         
-        IEnumerable<Produto> Search(string termo);
+        // Contrato para buscar os produtos pela barra de pesquisa
+        IEnumerable<Produto> Buscar(string termo);
     
     }
 }

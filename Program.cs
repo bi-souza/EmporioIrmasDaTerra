@@ -49,9 +49,6 @@ using (var scope = app.Services.CreateScope())
     SeedData.Initialize(dbContext);
 }
 
-// Redireciona HTTP → HTTPS (se estiver habilitado no projeto)
-app.UseHttpsRedirection();
-
 // Habilita o servidor web a "servir" (enviar) arquivos estáticos
 // (como CSS, JavaScript e imagens) da pasta 'wwwroot'.
 app.UseStaticFiles();
@@ -63,7 +60,6 @@ app.UseRouting();
 // ATENÇÃO: UseSession deve vir ANTES de Authorization
 app.UseSession();
 
-app.UseAuthorization();
 
 // "Distribui" as requisições para os Controllers
 app.MapControllerRoute(

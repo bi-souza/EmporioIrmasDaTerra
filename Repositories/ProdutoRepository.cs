@@ -1,4 +1,3 @@
-using System.Linq;
 using EmporioIrmasDaTerra.Data;
 using EmporioIrmasDaTerra.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,39 +8,25 @@ namespace EmporioIrmasDaTerra.Repositories
     {
         private readonly AppDbContext _context;
 
+        // cria a conexão com o BD por meio da injeção de dependência
         public ProdutoRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Produto>> GetAll()
-        {
-            return await _context.Produtos.ToListAsync();
-        }
-
-        public async Task<Produto?> GetById(int id)
-        {
-            return await _context.Produtos.FirstOrDefaultAsync(p => p.IdProduto == id);
-        }
-
-        public async Task<IEnumerable<Produto>> GetAllWithCategories()
-        {
-            return await _context.Produtos.Include(p => p.Categoria).ToListAsync();
-        }
-
-        public IEnumerable<Produto> GetFeaturedProducts()
+        public IEnumerable<Produto> ObterProdutosEmDestaque()
         {
 
             return _context.Produtos
                                  .Where(p => p.EmDestaque)
-                                 .Include(p => p.Categoria)
-                                 .ToList(); // Esta é a mudança principal
+                                 .Include(p => p.Categoria) //trazer os dados da Categoria de cada produto
+                                 .ToList();  //envia a consulta para o BD e materializa os resultados em uma List<Produtos>
          }
 
      
-        public IEnumerable<Produto> GetByCategory(string categoria)
+        public IEnumerable<Produto> PorCategoria(string categoria)
         {
-            
+            // traduz o slug da URL para o nome da categoria no BD
             string termoBusca = categoria switch
             {
                 "chas" => "Chás e Infusões",
@@ -53,6 +38,7 @@ namespace EmporioIrmasDaTerra.Repositories
                 _ => "" // Se não achar, retorna lista vazia
             };
 
+            // se a categoria nao foi encontrada, retorna uma lista vazia
             if (string.IsNullOrEmpty(termoBusca))
             {
                 return new List<Produto>();
@@ -60,30 +46,39 @@ namespace EmporioIrmasDaTerra.Repositories
 
             // Busca produtos onde o nome da categoria seja igual ao termo            
             return _context.Produtos 
-                        .Include(p => p.Categoria) 
+                        .Include(p => p.Categoria) //trazer os dados da Categoria de cada produto
                         .Where(p => p.Categoria.NomeCategoria == termoBusca)
                         .ToList();
         }
 
-        public IEnumerable<Produto> Search(string termo)
+
+        public IEnumerable<Produto> Buscar(string termo)
         {
-            
+            // verifica se o termo é null, empty ou só contém espaços em branco
             if (string.IsNullOrWhiteSpace(termo))
             {
-                return new List<Produto>(); 
+                return new List<Produto>();
             }
 
             var termoBusca = termo.ToLower();
 
-            // Busca produtos onde o Nome ou a Descrição contenham o termo
-           
-            return _context.Produtos 
-                        .Include(p => p.Categoria) 
-                        .Where(p => 
+            return _context.Produtos
+                        .Include(p => p.Categoria)
+                        .Where(p =>
                                 p.NomeProduto.ToLower().Contains(termoBusca) ||
                                 p.Descricao.ToLower().Contains(termoBusca)
-                        )
-                        .ToList(); 
+                        ) // procura o termo no nome e na descrição
+                        .ToList();
         }
+        
+        public async Task<Produto?> GetById(int id)
+        {
+            // Busca no banco de dados, na tabela de Produtos,
+            // o primeiro produto onde o IdProduto seja igual ao 'id' recebido.
+            // O FirstOrDefault retorna o produto ou 'null' se não encontrar.
+            return await _context.Produtos
+                           .FirstOrDefaultAsync(p => p.IdProduto == id);
+        }     
+        
     }
 }
