@@ -1,41 +1,29 @@
 using EmporioIrmasDaTerra.Models;
 using EmporioIrmasDaTerra.Repositories; 
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+
 
 namespace EmporioIrmasDaTerra.Controllers
 {
     public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+    {   
+        // readonly: valor do campo é definido só uma vez no construtor e nao muda mais     
         private readonly IProdutoRepository _produtoRepository;
 
-        
-        public HomeController(ILogger<HomeController> logger, IProdutoRepository produtoRepository)
+        // O construtor "pede" ao sistema de Injeção de Dependência do ASP.NET Core que forneça
+        // um objeto (um serviço) que implemente o contrato `IProdutoRepository`
+        public HomeController(IProdutoRepository produtoRepository)
         {
-            _logger = logger;
             _produtoRepository = produtoRepository;
         }
-
         
-        public async Task<IActionResult> Index()
-        {
-            // Usando esse método para os "Mais Vendidos" 
-            var produtosDestaque = await _produtoRepository.GetFeaturedProducts(); 
-            
-            // Envia a lista de produtos para a View
+        //retorna produtos em destaque
+        public IActionResult Index() 
+        {            
+            var produtosDestaque = _produtoRepository.GetFeaturedProducts(); // <-- Ver aviso abaixo!
             return View(produtosDestaque);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+     
+       
     }
 }

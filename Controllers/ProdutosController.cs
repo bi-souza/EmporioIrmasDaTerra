@@ -12,27 +12,23 @@ namespace EmporioIrmasDaTerra.Controllers
             _produtoRepository = produtoRepository;
         }
 
-        // Este é o método que o formulário chama (asp-action="Buscar")
-        // O 'string termo' recebe o valor do input (name="termo")
-        public async Task<IActionResult> Buscar(string termo)
-        {
-            // 1. Chama o método do repositório
-            var produtos = await _produtoRepository.Buscar(termo);
-
-            // 2. Envia o termo de busca para a View (para sabermos o que foi buscado)
+        // Barra de pesquisa      
+        public IActionResult Search(string termo)        
+        {            
+            var produtos = _produtoRepository.Search(termo); 
+            
             ViewData["TermoBuscado"] = termo;
-
-            // 3. Envia a lista de produtos (cheia ou vazia) para a View "Buscar"
+            
             return View("Buscar", produtos); 
         }
 
         [HttpGet]
-        public async Task<IActionResult> PorCategoria(string categoria)
+        public IActionResult ByCategory(string categoria)
         {
-            // 1. Busca os produtos no repositório
-            var produtos = await _produtoRepository.GetByCategoria(categoria);
+            
+            var produtos = _produtoRepository.GetByCategory(categoria);
 
-            // 2. Mapeia o slug para um nome bonito para o título da página
+            
             string tituloPagina = categoria switch
             {
                 "chas" => "Chás e Infusões",
@@ -44,10 +40,10 @@ namespace EmporioIrmasDaTerra.Controllers
                 _ => "Produtos"
             };
             
-            // 3. Passa o título para a View
+            
             ViewData["NomeCategoria"] = tituloPagina;
 
-            // 4. Retorna a View (que vamos criar agora)
+            
             return View(produtos);
         }
     }
