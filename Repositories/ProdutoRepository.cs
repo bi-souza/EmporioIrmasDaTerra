@@ -1,3 +1,4 @@
+using System.Linq;
 using EmporioIrmasDaTerra.Data;
 using EmporioIrmasDaTerra.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ namespace EmporioIrmasDaTerra.Repositories
     public class ProdutoRepository : IProdutoRepository
     {
         private readonly AppDbContext _context;
-       
+
         public ProdutoRepository(AppDbContext context)
         {
             _context = context;
@@ -25,9 +26,7 @@ namespace EmporioIrmasDaTerra.Repositories
 
         public async Task<IEnumerable<Produto>> GetAllWithCategories()
         {
-            return await _context.Produtos
-                                 .Include(p => p.Categoria)
-                                 .ToListAsync();
+            return await _context.Produtos.Include(p => p.Categoria).ToListAsync();
         }
 
         public IEnumerable<Produto> GetFeaturedProducts()
@@ -75,7 +74,9 @@ namespace EmporioIrmasDaTerra.Repositories
             }
 
             var termoBusca = termo.ToLower();
-            
+
+            // Busca produtos onde o Nome ou a Descrição contenham o termo
+           
             return _context.Produtos 
                         .Include(p => p.Categoria) 
                         .Where(p => 
@@ -84,9 +85,5 @@ namespace EmporioIrmasDaTerra.Repositories
                         )
                         .ToList(); 
         }
-        
-
-
-
     }
 }
