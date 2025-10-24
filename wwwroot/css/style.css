@@ -10,6 +10,7 @@
   position: relative; 
   overflow: hidden; 
   border-radius: 15px; 
+  cursor: pointer;
 }
 
 /* Aplica o degradê de baixo para cima cobrindo 60% da altura (mais suave no topo) */
