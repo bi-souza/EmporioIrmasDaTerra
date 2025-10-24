@@ -13,20 +13,22 @@ namespace EmporioIrmasDaTerra.Controllers
         }
 
         // Barra de pesquisa      
-        public IActionResult Search(string termo)        
-        {            
-            var produtos = _produtoRepository.Search(termo); 
-            
+        public IActionResult Buscar(string termo)
+        {
+            var produtos = _produtoRepository.Buscar(termo);
+
             ViewData["TermoBuscado"] = termo;
-            
-            return View("Buscar", produtos); 
+
+            return View(produtos);
         }
 
+        
+        // Menu categorias
         [HttpGet]
-        public IActionResult ByCategory(string categoria)
+        public IActionResult PorCategoria(string categoria)
         {
             
-            var produtos = _produtoRepository.GetByCategory(categoria);
+            var produtos = _produtoRepository.PorCategoria(categoria);
 
             
             string tituloPagina = categoria switch
@@ -38,11 +40,9 @@ namespace EmporioIrmasDaTerra.Controllers
                 "vinhos" => "Vinhos e Bebidas",
                 "graos" => "Grãos e Cereais",
                 _ => "Produtos"
-            };
-            
+            };            
             
             ViewData["NomeCategoria"] = tituloPagina;
-
             
             return View(produtos);
         }
