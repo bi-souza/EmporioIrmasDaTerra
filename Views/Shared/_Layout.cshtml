@@ -31,16 +31,28 @@
 
                 <div class="d-flex nav-icones">
                     @{
-                        // Pega o nome do usuário da sessão
                         var usuarioNome = Context.Session.GetString("UsuarioNome");
                     }
 
                     @if (usuarioNome != null)
                     {
-                        <a class="nav-link" asp-controller="Usuario" asp-action="Logout" title="Sair do sistema">
-                            <i class="fa fa-user-circle"></i>
-                            Olá, @usuarioNome!<br>(Sair)
-                        </a>
+                        <div class="d-flex align-items-start me-3">
+                            
+                            <span class="nav-link p-0" style="margin-right: 5px; margin-top: 3px;">
+                                <i class="fa fa-user-circle fa-2x"></i>
+                            </span>
+
+                            <div class="d-flex flex-column align-items-start justify-content-center">
+                                <span style="font-size: 0.9em; font-weight: 500; line-height: 1.2;">
+                                    Olá, @usuarioNome!
+                                </span>
+                                <a href="#" class="nav-link p-0 text-danger" 
+                                data-bs-toggle="modal" data-bs-target="#modalConfirmacaoLogout" 
+                                style="font-size: 0.8em; text-decoration: underline; line-height: 1.2;">
+                                    Sair
+                                </a>
+                            </div>
+                        </div>
                     }
                     else
                     {
@@ -53,6 +65,7 @@
                             </a>
                         </div>
                     }
+                </div>
                     @*<a class="nav-link" href="#">
                         <i class="fa fa-heart"></i>
                         Meus<br>Favoritos
@@ -118,5 +131,25 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <div class="modal fade" id="modalConfirmacaoLogout" tabindex="-1" aria-labelledby="modalConfirmacaoLogoutLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalConfirmacaoLogoutLabel">Encerrar Sessão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Você tem certeza que deseja sair?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a asp-controller="Usuario" asp-action="Logout" class="btn btn-danger">
+                        Sim, Encerrar Sessão
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
