@@ -70,7 +70,7 @@ namespace EmporioIrmasDaTerra.Repositories
                         ) // procura o termo no nome e na descrição
                         .ToList();
         }
-        
+
         public async Task<Produto?> GetById(int id)
         {
             // Busca no banco de dados, na tabela de Produtos,
@@ -80,5 +80,13 @@ namespace EmporioIrmasDaTerra.Repositories
                            .FirstOrDefaultAsync(p => p.IdProduto == id);
         }     
         
+        public Produto ObterPorIdComDetalhes(int id)
+        {
+            return _context.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Avaliacoes)
+                    .ThenInclude(a => a.Cliente)
+                .FirstOrDefault(p => p.IdProduto == id); // Síncrono
+        }
     }
 }

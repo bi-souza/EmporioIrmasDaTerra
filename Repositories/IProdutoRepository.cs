@@ -18,9 +18,12 @@ namespace EmporioIrmasDaTerra.Repositories
 
         // Contrato para buscar os produtos pelo menu
         IEnumerable<Produto> PorCategoria(string categoria);
-        
+
         // Contrato para buscar os produtos pela barra de pesquisa
         IEnumerable<Produto> Buscar(string termo);
+        
+        // Retorna um 'Produto' diretamente
+        Produto ObterPorIdComDetalhes(int id);
     
     }
 }
