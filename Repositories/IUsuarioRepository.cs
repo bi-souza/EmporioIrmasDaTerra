@@ -1,3 +1,5 @@
+// Repositories/IUsuarioRepository.cs
+
 using EmporioIrmasDaTerra.Models;
 using System.Collections.Generic;
 
@@ -5,10 +7,12 @@ namespace EmporioIrmasDaTerra.Repositories
 {
     public interface IUsuarioRepository
     {
-        // Métodos de Repositório (que o Controller usa)
         void Create(Usuario usuario);
-        Usuario Read(int id);
-        Usuario ReadByEmailAndSenha(string email, string senha);
-        Usuario ReadByEmail(string email);
+        // ATENÇÃO: Adicionar '?'
+        Usuario? Read(int id); 
+        // ATENÇÃO: Adicionar '?'
+        Usuario? ReadByEmailAndSenha(string email, string senha);
+        // ATENÇÃO: Adicionar '?'
+        Usuario? ReadByEmail(string email); 
     }
-}   
+}

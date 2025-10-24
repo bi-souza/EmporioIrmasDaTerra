@@ -1,19 +1,21 @@
+// Models/Usuario.cs (Corrigido para evitar warnings CS8618)
+
 namespace EmporioIrmasDaTerra.Models
 {
     public class Usuario
     {
         public int UsuarioId { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        // Em um projeto real, a senha NUNCA deve ser armazenada como string, 
-        // mas sim como hash. Para este exercício em memória, vamos simplificar.
-        public string Senha { get; set; } 
         
-        // Novos Campos para Cadastro de E-commerce
-        public string Telefone { get; set; }
-        public string Cpf { get; set; }
+        // Inicializa strings não-nulas para evitar CS8618
+        public string Nome { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Senha { get; set; } = string.Empty; 
         
-        // Campo para a separação Admin/Cliente (Role)
-        public string Papel { get; set; } // "Admin" ou "Cliente"
+        // Use '?' para campos opcionais (se for o caso)
+        public string? Telefone { get; set; }
+        public string? Cpf { get; set; } 
+        
+        // Dê um valor padrão, ou inicialize com string.Empty
+        public string Papel { get; set; } = "Cliente"; 
     }
 }

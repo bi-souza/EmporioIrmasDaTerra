@@ -25,19 +25,19 @@ namespace EmporioIrmasDaTerra.Repositories
             listaUsuarios.Add(usuario);
         }
 
-        public Usuario Read(int id)
+        public Usuario? Read(int id)
         {
             return listaUsuarios.FirstOrDefault(u => u.UsuarioId == id);
         }
 
-        public Usuario ReadByEmailAndSenha(string email, string senha)
+        public Usuario? ReadByEmailAndSenha(string email, string senha)
         {
             return listaUsuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
         }
 
-        public Usuario ReadByEmail(string email)
+        public Usuario? ReadByEmail(string email)
         {
             return listaUsuarios.FirstOrDefault(u => u.Email == email);
         }
-    }
+}
 }

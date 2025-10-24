@@ -31,7 +31,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
 // Registro do Repositório de Usuário para Login/Cadastro em memória
-builder.Services.AddScoped<IUsuarioRepository, IUsuarioMemoryRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioMemoryRepository>();
 
 builder.Services.AddHttpContextAccessor();   // para acessar HttpContext em controllers
 
