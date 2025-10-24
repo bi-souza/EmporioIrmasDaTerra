@@ -20,6 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache(); // cache em memoeria para a sessao
 builder.Services.AddSession(options =>
 {
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -28,6 +29,9 @@ builder.Services.AddSession(options =>
 // Quando um controller solicita IProdutoRepository, é entregue um ProdutoRepository (que busca os dados no bd) (injeção de dependência).
 // "AddScoped" significa que uma nova instância de ProdutoRepository será criada para cada requisição web (visita no site).
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+
+// Registro do Repositório de Usuário para Login/Cadastro em memória
+builder.Services.AddScoped<IUsuarioRepository, IUsuarioMemoryRepository>();
 
 builder.Services.AddHttpContextAccessor();   // para acessar HttpContext em controllers
 

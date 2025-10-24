@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using EmporioIrmasDaTerra.Models;
 using EmporioIrmasDaTerra.Repositories;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 
 namespace EmporioIrmasDaTerra.Controllers
@@ -18,7 +18,7 @@ namespace EmporioIrmasDaTerra.Controllers
 
         // ... (Actions de Cadastro, Login e Logout permanecem as mesmas) ...
         // ... (A lógica usa Session e Repository, como definido anteriormente) ...
-        
+
         // Exemplo da lógica de LOGIN com redirecionamento:
         [HttpPost]
         public IActionResult Login(string email, string senha)
@@ -34,15 +34,15 @@ namespace EmporioIrmasDaTerra.Controllers
             // Autenticação (Usando Session)
             HttpContext.Session.SetInt32("UsuarioId", usuario.UsuarioId);
             HttpContext.Session.SetString("UsuarioNome", usuario.Nome);
-            HttpContext.Session.SetString("UsuarioPapel", usuario.Papel); 
-            
+            HttpContext.Session.SetString("UsuarioPapel", usuario.Papel);
+
             // Redirecionamento baseado no Papel
             if (usuario.Papel == "Admin")
             {
-                return RedirectToAction("Index", "Admin"); 
+                return RedirectToAction("Index", "Admin");
             }
 
-            return RedirectToAction("Index", "Home"); 
+            return RedirectToAction("Index", "Home");
         }
     }
 }
