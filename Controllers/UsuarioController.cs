@@ -1,4 +1,3 @@
-// Controllers/UsuarioController.cs
 using Microsoft.AspNetCore.Mvc;
 using EmporioIrmasDaTerra.Models;
 using EmporioIrmasDaTerra.Repositories;
@@ -16,10 +15,52 @@ namespace EmporioIrmasDaTerra.Controllers
             this.repository = repository;
         }
 
-        // ... (Actions de Cadastro, Login e Logout permanecem as mesmas) ...
-        // ... (A lógica usa Session e Repository, como definido anteriormente) ...
+        // =========================================================
+        // AÇÕES DE CADASTRO
+        // =========================================================
 
-        // Exemplo da lógica de LOGIN com redirecionamento:
+        // [1] HTTP GET: Exibe a página de cadastro (Resolve o erro 404)
+        public IActionResult Cadastro()
+        {
+            return View();
+        }
+
+        // [2] HTTP POST: Processa a submissão do formulário de Cadastro
+        [HttpPost]
+        public IActionResult Cadastro(Usuario usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                // 1. Verifica se o e-mail já está cadastrado antes de criar
+                var usuarioExistente = repository.ReadByEmail(usuario.Email);
+                if (usuarioExistente != null)
+                {
+                    ModelState.AddModelError("Email", "Este e-mail já está cadastrado.");
+                    return View(usuario);
+                }
+
+                // 2. Cria o novo usuário
+                repository.Create(usuario);
+
+                // 3. Redireciona para o Login após o sucesso
+                return RedirectToAction("Login");
+            }
+
+            // Se a validação falhar, retorna a View com os dados preenchidos
+            return View(usuario);
+        }
+
+        // =========================================================
+        // AÇÕES DE LOGIN
+        // =========================================================
+        
+        // [3] HTTP GET: Exibe a página de login (Necessário para a rota funcionar)
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // [4] HTTP POST: Lógica de autenticação (Seu código original)
         [HttpPost]
         public IActionResult Login(string email, string senha)
         {
@@ -28,7 +69,8 @@ namespace EmporioIrmasDaTerra.Controllers
             if (usuario == null)
             {
                 ModelState.AddModelError("", "E-mail ou senha inválidos.");
-                return View();
+                // Retorna a View Login.cshtml, caso haja erros
+                return View(); 
             }
 
             // Autenticação (Usando Session)
@@ -44,5 +86,16 @@ namespace EmporioIrmasDaTerra.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        // =========================================================
+        // AÇÃO DE LOGOUT
+        // =========================================================
+
+        // [5] HTTP GET: Encerra a sessão
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Limpa todas as chaves de sessão
+            return RedirectToAction("Index", "Home");
+        }
     }
-}
+}   
