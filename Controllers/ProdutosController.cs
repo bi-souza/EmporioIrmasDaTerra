@@ -22,15 +22,15 @@ namespace EmporioIrmasDaTerra.Controllers
             return View(produtos);
         }
 
-        
+
         // Menu categorias
         [HttpGet]
         public IActionResult PorCategoria(string categoria)
         {
-            
+
             var produtos = _produtoRepository.PorCategoria(categoria);
 
-            
+
             string tituloPagina = categoria switch
             {
                 "chas" => "Chás e Infusões",
@@ -40,11 +40,27 @@ namespace EmporioIrmasDaTerra.Controllers
                 "vinhos" => "Vinhos e Bebidas",
                 "graos" => "Grãos e Cereais",
                 _ => "Produtos"
-            };            
-            
+            };
+
             ViewData["NomeCategoria"] = tituloPagina;
-            
+
             return View(produtos);
         }
+        
+        public IActionResult Detalhes(int id)
+        {
+            // Chamada síncrona, sem 'await'
+            var produto = _produtoRepository.ObterPorIdComDetalhes(id);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return View(produto);
+        }
+
+
+
     }
 }
