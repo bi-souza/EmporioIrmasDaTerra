@@ -1,0 +1,107 @@
+@* 1. A DIRETIVA @model:
+   Esta é a linha mais importante. Ela "diz" para a View qual é o
+   tipo de objeto (o "Modelo") que ela vai receber do Controller.
+   Neste caso, ela espera um único objeto da classe 'Produto'.
+*@
+@model EmporioIrmasDaTerra.Models.Produto
+
+@{
+    // 2. TÍTULO DA PÁGINA:
+    // Define o título que aparecerá na aba do navegador.
+    ViewData["Title"] = Model.NomeProduto;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.ImagemUrl" class="img-fluid rounded shadow-sm" alt="@Model.NomeProduto">
+        </div>
+
+        <div class="col-md-6">
+            
+            <span class="badge bg-secondary mb-2" style="font-size: 1rem;">
+                @Model.Categoria.NomeCategoria
+            </span>
+
+            <h1 class="display-4">@Model.NomeProduto</h1>
+
+            <p class="lead">@Model.Descricao</p>
+
+            <h3 class="text-success fw-bold">@Model.Preco.ToString("C")</h3>
+
+            <form asp-controller="Carrinho" asp-action="Adicionar" method="post" class="mt-4">
+    
+                @* 1. Campo Oculto (hidden) para enviar o ID do produto.
+                Note que usamos @Model.IdProduto, pois estamos na página de Detalhes
+                e o produto é o próprio Modelo.
+                *@
+                <input type="hidden" name="id" value="@Model.IdProduto" />
+
+                @* 2. Campo de Quantidade. 
+                Isso permite ao usuário escolher quantos itens quer adicionar.
+                *@
+                <div class="mb-3" style="max-width: 150px;">
+                    <label for="qtd-produto" class="form-label">Quantidade:</label>
+                    <input type="number" id="qtd-produto" name="qtd" value="1" min="1" class="form-control" />
+                </div>
+
+                @* 3. O botão "submit" que envia o formulário.
+                Usamos as classes "btn-lg" e "d-grid" do seu botão demo
+                para manter o layout.
+                *@
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Avaliações de Clientes</h2>
+            
+            @* 6. LÓGICA DE EXIBIÇÃO:
+               Verifica se a lista de avaliações (Model.Avaliacoes)
+               tem algum item (.Any()).
+            *@
+            @if (Model.Avaliacoes.Any())
+            {
+                @* 7. O LOOP:
+                   Se houver avaliações, o 'foreach' percorre cada
+                   item na lista 'Model.Avaliacoes'.
+                *@
+                @foreach (var avaliacao in Model.Avaliacoes)
+                {
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @avaliacao.Cliente.NomeCliente
+                            </h5>
+                            
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                Nota: <strong>@avaliacao.Nota/5 estrelas</strong>
+                                <small class="ms-2">
+                                    - Em: @avaliacao.DataAvaliacao.ToShortDateString()
+                                </small>
+                            </h6>
+                            
+                            <p class="card-text">"@avaliacao.Comentario"</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                @* 8. MENSAGEM DE "NÃO HÁ AVALIAÇÕES" *@
+                <div class="alert alert-info" role="alert">
+                    Este produto ainda não possui avaliações. Seja o primeiro a avaliar!
+                </div>
+            }
+        </div>
+    </div>
+</div>
