@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-t" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Empório Irmãs da Terra</title>
     <link rel="icon" href="~/favicon.ico" />
@@ -29,7 +29,7 @@
                     </form>
                 </div>
 
-                <div class="d-flex nav-icones">
+                <div class="d-flex nav-icones align-items-center">
                     @{
                         var usuarioNome = Context.Session.GetString("UsuarioNome");
                     }
@@ -56,16 +56,15 @@
                     }
                     else
                     {
-                        <div class="d-flex flex-column align-items-center me-3">
-                            <a class="nav-link p-0" asp-controller="Usuario" asp-action="Login">
-                                <i class="fa fa-user-circle fa-lg"></i>
-                            </a>
-                            <a class="nav-link p-0" asp-controller="Usuario" asp-action="Cadastro">
-                                Entre ou<br>Cadastre-se
-                            </a>
-                        </div>
+                        <a class="nav-link d-flex align-items-center me-3" asp-controller="Usuario" asp-action="Login">
+                            <i class="fa fa-user-circle fa-2x me-2"></i>
+                            <div class="d-flex flex-column" style="line-height: 1.2; font-size: 0.9em;">
+                                <span>Entre ou</span>
+                                <strong>Cadastre-se</strong>
+                            </div>
+                        </a>
                     }
-                </div>
+
                     @*<a class="nav-link" href="#">
                         <i class="fa fa-heart"></i>
                         Meus<br>Favoritos
@@ -74,9 +73,12 @@
                     <a class="nav-link" asp-controller="Carrinho" asp-action="Index">  <!-- asp-action="Index" → indica que vai chamar o método Index() (a página do carrinho).  -->
 
                     </a>*@
-                    <a class="nav-link" asp-controller="Carrinho" asp-action="Index">
-                        <i class="fa fa-shopping-cart"></i>
-                        Meu<br>Carrinho
+                    <a class="nav-link d-flex align-items-center" asp-controller="Carrinho" asp-action="Index">
+                        <i class="fa fa-shopping-cart fa-2x me-2"></i>
+                        <div class="d-flex flex-column" style="line-height: 1.2; font-size: 0.9em;">
+                            <span>Meu</span>
+                            <strong>Carrinho</strong>
+                        </div>
                     </a>
                 </div>
             </div>
